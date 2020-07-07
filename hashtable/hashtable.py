@@ -27,8 +27,9 @@ class HashTable:
 
     def __init__(self, capacity):
         # Your code here
-        self.capacity = [LinkedList()] * MIN_CAPACITY
+        self.data = [LinkedList()] * MIN_CAPACITY
         self.items = 0
+        self.capacity = capacity
 
 
     def get_num_slots(self):
@@ -92,8 +93,8 @@ class HashTable:
         Take an arbitrary key and return a valid integer index
         between within the storage capacity of the hash table.
         """
-        return self.fnv1(key) % len(self.capacity)
-        #return self.djb2(key) % self.capacity
+        #return self.fnv1(key) % len(self.capacity)
+        return self.djb2(key) % self.capacity
 
     def put(self, key, value):
         """
@@ -105,7 +106,7 @@ class HashTable:
         """
         # Your code here
         i = self.hash_index(key)
-        current = self.capacity[i].head
+        current = self.data[i].head
 
         while current:
             if current.key == key:
@@ -113,7 +114,8 @@ class HashTable:
             current = current.next
 
         entry = HashTableEntry(key,value)
-        self.capacity[i].insert_at_head(entry)
+        self.data[i].insert_at_head(entry)
+        self.items += 1
 
 
     def delete(self, key):
@@ -125,7 +127,12 @@ class HashTable:
         Implement this.
         """
         # Your code here
-        self.put(key, None)
+        i = self.hash_index(key)
+        if self.data[i] == None:
+            print("error")
+        else:
+            self.put(key, None)
+            self.items -= 1
 
 
     def get(self, key):
@@ -138,14 +145,13 @@ class HashTable:
         """
         # Your code here
         i = self.hash_index(key)
-        current = self.capacity[i].head
+        current = self.data[i].head
         
         while current:
             if current.key == key:
                 return current.value
             current = current.next
         return None
-
 
     def resize(self, new_capacity):
         """
@@ -155,7 +161,15 @@ class HashTable:
         Implement this.
         """
         # Your code here
-
+        if self.get_load_factor() > 0.7:
+            old_data = self.data
+            self.data = [LinkedList()] * new_capacity
+            for element in old_data:
+                current = element.head
+                while current:
+                    self.put(current.key, current.value)
+                    current = current.next
+            self.capacity = new_capacity
 
 
 if __name__ == "__main__":

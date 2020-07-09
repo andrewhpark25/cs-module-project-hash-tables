@@ -2,6 +2,7 @@
 find all a, b, c, d in q such that
 f(a) + f(b) = f(c) - f(d)
 """
+import itertools
 
 #q = set(range(1, 10))
 #q = set(range(1, 200))
@@ -12,4 +13,7 @@ def f(x):
     return x * 4 + 6
 
 # Your code here
+    
 
+
+    

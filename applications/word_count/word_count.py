@@ -1,5 +1,27 @@
 def word_count(s):
     # Your code here
+    ignored = ['"', ':', ';', ',', '.', '-', '+', '=', '/', '\\', '|', '[', ']', '{', '}', '(', ')', '*', '^', '&']
+    
+    counts = dict()
+    
+    new_string = s.lower().split()
+    
+    for word in new_string:
+        no_ignored = ""
+        for character in word:
+            if character not in ignored:
+               no_ignored += character
+            word = no_ignored
+        
+        if word in counts:
+            counts[word] +=1 
+        elif word == "":
+            break
+        else:
+            counts[word] = 1
+            
+    return counts
+            
 
 
 

@@ -2,58 +2,29 @@
 # decode it.
 
 # Your code here
+from collections import Counter
 
-encode_table = {
-    'A': 'H',
-    'B': 'Z',
-    'C': 'Y',
-    'D': 'W',
-    'E': 'O',
-    'F': 'R',
-    'G': 'J',
-    'H': 'D',
-    'I': 'P',
-    'J': 'T',
-    'K': 'I',
-    'L': 'G',
-    'M': 'L',
-    'N': 'C',
-    'O': 'E',
-    'P': 'X',
-    'Q': 'K',
-    'R': 'U',
-    'S': 'N',
-    'T': 'F',
-    'U': 'A',
-    'V': 'M',
-    'W': 'B',
-    'X': 'Q',
-    'Y': 'V',
-    'Z': 'S'
-}
 
-decode_table = {}
+frequency = [
+    'E', 'T', 'A', 'O', 'H', 'N', 
+    'R', 'I', 'S', 'D', 'L', 'W', 
+    'U', 'G', 'F', 'B', 'M', 'Y', 
+    'C', 'P', 'K', 'V', 'Q', 'J', 
+    'X', 'Z'
+    ]
 
-# Automatically generate the decode_table from the encode_table
-for k, v in encode_table.items():
-	decode_table[v] = k
+with open("ciphertext.txt", "r", encoding='UTF8') as f:
+    words = f.read()
 
-def encode(s):
-	r = ""
+content_counter = Counter(filter(str.isalnum, words))
+mapping = {key:value for (key,value) in zip([i[0] for i in content_counter.most_common()], frequency)}
+output = ""
 
-	for c in s:
-		r += encode_table[c]
+for letter in words:
+    output_letter =  letter
+    if letter in mapping.keys():
+        output_letter = mapping[letter]
+    output += output_letter
 
-	return r
-
-def decode(s):
-	r = ""
-
-	for c in s:
-		r += decode_table[c]
-
-	return r
-
-print(encode("HELLO"))  # plaintext
-
-print(decode("DOGGE"))  # ciphertext
+if __name__ == "__main__":
+    print(output) 

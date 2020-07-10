@@ -1,6 +1,16 @@
 def no_dups(s):
     # Your code here
+   
 
+    # fromkeys eliminates duplicates
+
+    no_duplicate = dict().fromkeys(s.split())
+
+    return ' '.join(no_duplicate)
+
+    
+    
+  
 
 
 if __name__ == "__main__":
